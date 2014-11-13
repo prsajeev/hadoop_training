@@ -50,12 +50,12 @@ public class KeysJob
 			
 			System.out.println(" job inputfile name " + inputFileName);
 			// Create job         
-			Job job = new Job(conf, "KeyGen");         
+			Job job = new Job(conf, "KeysJob");         
 			job.setJarByClass(KeysJob.class);           
 			// Setup MapReduce         
 			job.setMapperClass(KeysMapper.class);         
 			job.setReducerClass(KeysReducer.class);         
-			job.setNumReduceTasks(1);           
+			//job.setNumReduceTasks(1);           
 			// Specify key / value         
 			job.setMapOutputKeyClass(Text.class);
 			job.setMapOutputValueClass(Text.class);

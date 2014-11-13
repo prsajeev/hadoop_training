@@ -73,9 +73,9 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 				String outmasterRecord = inputs[0]+","+ inputs[1]+","+surrKey;
 				System.out.println(" outmasterRecord " +outmasterRecord  );
 				System.out.println(" masterkeyfiel is  " +keyFilePath  );
-				keyFilePath = keyFilePath+System.currentTimeMillis();
+				keyFilePath = keyFilePath+"/" +System.currentTimeMillis();
 				//multipleOutputs.write("", new Text(outmasterRecord), "/tmp/keys/masterkeys/");
-				multipleOutputs.write(NullWritable.get(), new Text(outmasterRecord), keyFilePath+"/");
+				multipleOutputs.write(NullWritable.get(), new Text(outmasterRecord), keyFilePath);
 			}
 			//got the keys now write the output file
 			outRecord = inputRecords+","+surrKey;

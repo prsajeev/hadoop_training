@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.FileSplit;
+import org.apache.hadoop.mapreduce.lib.input.FileSplit;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.Mapper.Context;
 
@@ -16,7 +16,7 @@ public class KeysMapper extends   Mapper<LongWritable, Text, Text, Text>
 	//private String inputFileName = "";
 	//private String keyFileName = "";
 	
-	public void setUp(Context context)
+	public void setup(Context context)
 	{
 		FileSplit inputSplit=(FileSplit)context.getInputSplit();
 		inputSource = inputSplit.getPath().toString();
