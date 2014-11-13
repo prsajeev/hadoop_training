@@ -13,6 +13,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat; 
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat; 
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat; 
+import org.apache.hadoop.mapreduce.lib.output.LazyOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat; 
 
 import com.hdptest.mapper.KeysMapper;
@@ -69,7 +70,7 @@ public class KeysJob
 			
 			job.setInputFormatClass(TextInputFormat.class);           
 			         
-			         
+			LazyOutputFormat.setOutputFormatClass(job, TextOutputFormat.class);
 			
 			
 			

@@ -20,20 +20,18 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 	private String inputSource = "";
 	//private String inputFileName = "";
 	//private String keyFileName = "";
-	private MultipleOutputs<Text,Text> multipleOutputs; 
+	private MultipleOutputs multipleOutputs; 
 	String keyFilePath = null;
 	String outputPath = null;
 	
-	public void setUp(Context context)
-	{
 		
-		//inputFileName = context.getConfiguration().get("inputFileName");
-		//keyFileName = context.getConfiguration().get("keyFileName");
-		multipleOutputs  = new MultipleOutputs<Text,Text>(context);
+	public void setup(Context context)
+	{
+		multipleOutputs  = new MultipleOutputs(context);
 		keyFilePath = context.getConfiguration().get("keyFilePath");
 		outputPath = context.getConfiguration().get("outputPath");
-		
 	}
+
 
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException 
 	{    
@@ -53,6 +51,8 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 			inputSource = valueStrs[0];
 			String record = valueStrs[1];
 			
+			System.out.println(" rcord are " + record);
+			
 			if(inputSource.equalsIgnoreCase("masterkeys"))//record is from keyFile
 			{
 				surrKey = record.split("\\,")[2];
@@ -71,11 +71,15 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 				
 				surrKey = generateKeys();
 				String outmasterRecord = inputs[0]+","+ inputs[1]+","+surrKey;
-				multipleOutputs.write("", new Text(outmasterRecord), keyFilePath);
+				System.out.println(" outmasterRecord " +outmasterRecord  );
+				System.out.println(" masterkeyfiel is  " +keyFilePath  );
+				keyFilePath = keyFilePath+System.currentTimeMillis();
+				//multipleOutputs.write("", new Text(outmasterRecord), "/tmp/keys/masterkeys/");
+				multipleOutputs.write(NullWritable.get(), new Text(outmasterRecord), keyFilePath+"/");
 			}
 			//got the keys now write the output file
 			outRecord = inputRecords+","+surrKey;
-			multipleOutputs.write("", new Text(outRecord), outputPath);
+			multipleOutputs.write(NullWritable.get(), new Text(outRecord), outputPath);
 		}
 		  
 	}
@@ -87,6 +91,11 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 		return idOne.toString();
 
 	}
+	
+	 protected void cleanup(Context context) throws IOException, InterruptedException {
+		 multipleOutputs.close();
+	    }
+
 	
 
 }
