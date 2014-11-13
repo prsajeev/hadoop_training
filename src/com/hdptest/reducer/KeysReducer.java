@@ -14,22 +14,22 @@ import org.apache.hadoop.mapreduce.Reducer;
 import org.apache.hadoop.mapreduce.Mapper.Context;
 import org.apache.hadoop.mapreduce.lib.output.MultipleOutputs;
 
-public class KeysReducer extends  Reducer<Text, Text, NullWritable, Text> 
+public class KeysReducer extends  Reducer<Text, Text, Text, Text> 
 {     
 		
 	private String inputSource = "";
-	private String inputFileName = "";
-	private String keyFileName = "";
-	private MultipleOutputs<NullWritable,Text> multipleOutputs; 
+	//private String inputFileName = "";
+	//private String keyFileName = "";
+	private MultipleOutputs<Text,Text> multipleOutputs; 
 	String keyFilePath = null;
 	String outputPath = null;
 	
 	public void setUp(Context context)
 	{
 		
-		inputFileName = context.getConfiguration().get("inputFileName");
-		keyFileName = context.getConfiguration().get("keyFileName");
-		multipleOutputs  = new MultipleOutputs<NullWritable,Text>(context);
+		//inputFileName = context.getConfiguration().get("inputFileName");
+		//keyFileName = context.getConfiguration().get("keyFileName");
+		multipleOutputs  = new MultipleOutputs<Text,Text>(context);
 		keyFilePath = context.getConfiguration().get("keyFilePath");
 		outputPath = context.getConfiguration().get("outputPath");
 		
@@ -37,7 +37,8 @@ public class KeysReducer extends  Reducer<Text, Text, NullWritable, Text>
 
 	public void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException 
 	{    
-		
+		keyFilePath = context.getConfiguration().get("keyFilePath");
+		outputPath = context.getConfiguration().get("outputPath");
 		
 		String keyStr = key.toString();
 		String keys[] = keyStr.split("\\|");
@@ -70,11 +71,11 @@ public class KeysReducer extends  Reducer<Text, Text, NullWritable, Text>
 				
 				surrKey = generateKeys();
 				String outmasterRecord = inputs[0]+","+ inputs[1]+","+surrKey;
-				multipleOutputs.write(NullWritable.get(), new Text(outmasterRecord), keyFilePath);
+				multipleOutputs.write("", new Text(outmasterRecord), keyFilePath);
 			}
 			//got the keys now write the output file
 			outRecord = inputRecords+","+surrKey;
-			multipleOutputs.write(NullWritable.get(), new Text(outRecord), outputPath);
+			multipleOutputs.write("", new Text(outRecord), outputPath);
 		}
 		  
 	}

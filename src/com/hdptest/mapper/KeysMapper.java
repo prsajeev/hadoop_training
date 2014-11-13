@@ -13,8 +13,8 @@ public class KeysMapper extends   Mapper<LongWritable, Text, Text, Text>
 	     
 	 
 	private String inputSource = "";
-	private String inputFileName = "";
-	private String keyFileName = "";
+	//private String inputFileName = "";
+	//private String keyFileName = "";
 	
 	public void setUp(Context context)
 	{
