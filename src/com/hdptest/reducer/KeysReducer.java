@@ -86,8 +86,8 @@ public class KeysReducer extends  Reducer<Text, Text, Text, Text>
 	
 	private String generateKeys(String key2)
 	{
-		java.util.UUID idOne = java.util.UUID.fromString(key2);
-		return idOne.toString();
+		java.util.UUID idOne = java.util.UUID.randomUUID();
+		return key2+"-"+idOne.toString();
 
 
 	}
